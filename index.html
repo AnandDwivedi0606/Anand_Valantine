@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Surprise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background pattern */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://picsum.photos/seed/hearts-pattern/1200/800.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        /* Decorative background elements */
+        .bg-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .bg-heart {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float-bg 15s infinite linear;
+        }
+
+        @keyframes float-bg {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        .teddy-left {
+            position: absolute;
+            left: 5%;
+            bottom: 10%;
+            width: 200px;
+            height: 200px;
+            background-image: url('./images/a.jpeg');
+            /* background-image: url('https://picsum.photos/seed/teddy1/200/200.jpg'); */
+            background-size: contain;
+            border-radius: 80px;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float-left 4s ease-in-out infinite;
+            z-index: 2;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        .teddy-right {
+            position: absolute;
+            right: 5%;
+            bottom: 10%;
+            width: 200px;
+            height: 200px;
+            background-image: url('./images/s.png');
+            /* background-image: url('https://picsum.photos/seed/teddy2/200/200.jpg'); */
+            background-size: contain;
+            border-radius: 80px;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: float-right 4s ease-in-out infinite;
+            z-index: 2;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        @keyframes float-left {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes float-right {
+            0%, 100% {
+                transform: translateY(0) rotate(5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(-5deg);
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            color: white;
+            position: absolute;
+            transition: all 0.1s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+            z-index: 10;
+        }
+
+        .btn-no:hover, .btn-no:focus {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(156, 39, 176, 0.6);
+        }
+
+        .btn-no::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn-no:hover::after {
+            transform: translateX(100%);
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 0, 100, 0.7);
+            transform: rotate(45deg);
+            animation: float 5s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 0, 100, 0.7);
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+        }
+
+        .celebration-content {
+            text-align: center;
+            color: white;
+            animation: zoomIn 0.5s ease-out;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .celebration-image {
+            width: 200px;
+            height: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: imageFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes imageFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .celebration h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        .celebration p {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            animation: fadeInText 1s ease-out;
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .celebration-emoji {
+            font-size: 3rem;
+            margin: 10px 0;
+            animation: emojiBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes emojiBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .close-celebration {
+            padding: 12px 30px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .close-celebration:hover {
+            background-color: #ff8e53;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 142, 83, 0.4);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f44336;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .teddy-love {
+            position: absolute;
+            font-size: 2rem;
+            animation: love-float 3s ease-in-out infinite;
+        }
+
+        .teddy-left .teddy-love {
+            top: -30px;
+            right: 20px;
+        }
+
+        .teddy-right .teddy-love {
+            top: -30px;
+            left: 20px;
+        }
+
+        @keyframes love-float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-10px) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            
+            .btn-yes {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+            
+            .buttons {
+                gap: 20px;
+            }
+
+            .teddy-left, .teddy-right {
+                width: 120px;
+                height: 120px;
+            }
+
+            .teddy-left {
+                left: 2%;
+            }
+
+            .teddy-right {
+                right: 2%;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .celebration-image {
+                width: 150px;
+                height: 200px;
+            }
+
+            .celebration h2 {
+                font-size: 2.5rem;
+            }
+
+            .celebration p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .teddy-left, .teddy-right {
+                width: 100px;
+                height: 100px;
+            }
+
+            .celebration-image {
+                width: 90px;
+                height: 150px;
+            }
+
+            .celebration h2 {
+                font-size: 2rem;
+            }
+
+            .celebration p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Touch device specific styles */
+        @media (hover: none) {
+            .btn-no {
+                position: relative;
+                margin-top: 20px;
+            }
+        }
+
+        /* Dramatic jump animation */
+        @keyframes dramaticJump {
+            0% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(0.5) rotate(180deg); 
+                opacity: 0.5;
+            }
+            100% { 
+                transform: scale(1) rotate(360deg); 
+                opacity: 1;
+            }
+        }
+
+        .btn-no.jumping {
+            animation: dramaticJump 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background decorative hearts -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <div class="teddy-left">
+        <div class="teddy-love">💕</div>
+    </div>
+    <div class="teddy-right">
+        <div class="teddy-love">💝</div>
+    </div>
+
+    <div class="container">
+        <h1>Will you be my Valentine?</h1>
+        <div class="buttons" id="buttonsContainer">
+            <button class="btn btn-yes" id="yesBtn">Yes 💖</button>
+            <button class="btn btn-no" id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <img src="./images/as.jpeg" alt="Valentine's Love" class="celebration-image">
+            <!-- <img src="https://picsum.photos/seed/valentine-love/300/300.jpg" alt="Valentine's Love" class="celebration-image"> -->
+            <h2>Yay! 💕</h2>
+            <div class="celebration-emoji">💖💝💗</div>
+            <p>I'm so happy you said yes!</p>
+            <p>You've made me the happiest person!</p>
+            <p>Let's make this Valentine's Day special together!</p>
+            <p>Forever yours 💕</p>
+            <button class="close-celebration" id="closeBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Create background decorative hearts
+        function createBackgroundHearts() {
+            const bgHearts = document.getElementById('bgHearts');
+            const heartSymbols = ['❤️', '💕', '💖', '💗', '💝'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                
+                // Random position
+                const left = Math.random() * 100;
+                heart.style.left = `${left}%`;
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 15;
+                const duration = 15 + Math.random() * 10;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                
+                // Random size
+                const size = Math.random() * 1.5 + 0.5;
+                heart.style.fontSize = `${size}rem`;
+                
+                bgHearts.appendChild(heart);
+            }
+        }
+
+        // Initialize background hearts
+        createBackgroundHearts();
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Random position
+            const left = Math.random() * 100;
+            heart.style.left = `${left}%`;
+            
+            // Random size
+            const size = Math.random() * 15 + 10;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            // Random animation duration
+            const duration = Math.random() * 3 + 5;
+            heart.style.animationDuration = `${duration}s`;
+            
+            // Random color
+            const colors = ['rgba(255, 0, 100, 0.7)', 'rgba(255, 20, 147, 0.7)', 'rgba(219, 39, 119, 0.7)'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.backgroundColor = color;
+            
+            // Apply color to pseudo-elements
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .heart:nth-child(${document.querySelectorAll('.heart').length + 1}):before,
+                .heart:nth-child(${document.querySelectorAll('.heart').length + 1}):after {
+                    background-color: ${color};
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(heart);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 800);
+
+        // Create sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            
+            // Random position
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            sparkle.style.left = `${left}%`;
+            sparkle.style.top = `${top}%`;
+            
+            // Random animation delay
+            const delay = Math.random() * 2;
+            sparkle.style.animationDelay = `${delay}s`;
+            
+            document.body.appendChild(sparkle);
+            
+            // Remove sparkle after animation
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Create sparkles periodically
+        setInterval(createSparkle, 300);
+
+        // No button behavior with dramatic position changes
+        const noBtn = document.getElementById('noBtn');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        const container = document.querySelector('.container');
+        let lastPosition = { x: 50, y: 0 };
+        let moveCount = 0;
+        
+        // Function to get completely random position far from current
+        function getFarRandomPosition(currentX, currentY, maxX, maxY) {
+            // Define quadrants
+            const quadrants = [
+                { xMin: 0, xMax: maxX * 0.3, yMin: 0, yMax: maxY * 0.3 }, // Top-left
+                { xMin: maxX * 0.7, xMax: maxX, yMin: 0, yMax: maxY * 0.3 }, // Top-right
+                { xMin: 0, xMax: maxX * 0.3, yMin: maxY * 0.7, yMax: maxY }, // Bottom-left
+                { xMin: maxX * 0.7, xMax: maxX, yMin: maxY * 0.7, yMax: maxY }, // Bottom-right
+                { xMin: maxX * 0.35, xMax: maxX * 0.65, yMin: maxY * 0.35, yMax: maxY * 0.65 } // Center
+            ];
+            
+            // Find current quadrant
+            let currentQuadrant = -1;
+            for (let i = 0; i < quadrants.length; i++) {
+                const q = quadrants[i];
+                if (currentX >= q.xMin && currentX <= q.xMax && 
+                    currentY >= q.yMin && currentY <= q.yMax) {
+                    currentQuadrant = i;
+                    break;
+                }
+            }
+            
+            // Choose a different quadrant
+            let newQuadrant;
+            do {
+                newQuadrant = Math.floor(Math.random() * quadrants.length);
+            } while (newQuadrant === currentQuadrant && quadrants.length > 1);
+            
+            // Get random position in new quadrant
+            const q = quadrants[newQuadrant];
+            const newX = Math.random() * (q.xMax - q.xMin - noBtn.offsetWidth) + q.xMin;
+            const newY = Math.random() * (q.yMax - q.yMin - noBtn.offsetHeight) + q.yMin;
+            
+            return { x: newX, y: newY };
+        }
+        
+        // Function to move the no button to completely different position
+        function moveNoButton() {
+            // Get container dimensions
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            
+            // Get current position
+            const currentX = parseFloat(noBtn.style.left) || 0;
+            const currentY = parseFloat(noBtn.style.top) || 0;
+            
+            // Get far random position
+            const newPos = getFarRandomPosition(
+                currentX, 
+                currentY, 
+                containerRect.width - noBtn.offsetWidth - 20,
+                containerRect.height - noBtn.offsetHeight - 20
+            );
+            
+            // Add dramatic jump animation
+            noBtn.classList.add('jumping');
+            
+            // Apply new position
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${newPos.x}px`;
+            noBtn.style.top = `${newPos.y}px`;
+            noBtn.style.transform = 'none';
+            
+            // Remove animation class
+            setTimeout(() => {
+                noBtn.classList.remove('jumping');
+            }, 300);
+            
+            // Update last position
+            lastPosition = { x: newPos.x, y: newPos.y };
+            moveCount++;
+            
+            // Every 3 moves, make it extra dramatic
+            if (moveCount % 3 === 0) {
+                setTimeout(() => {
+                    noBtn.style.transform = 'rotate(' + (Math.random() * 360) + 'deg) scale(' + (0.8 + Math.random() * 0.4) + ')';
+                    setTimeout(() => {
+                        noBtn.style.transform = 'none';
+                    }, 500);
+                }, 100);
+            }
+        }
+        
+        // Check if device is touch-enabled
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (isTouchDevice) {
+            // For touch devices, use touchstart event
+            noBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Also handle click event as fallback
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+        } else {
+            // For desktop, use mouseover event
+            noBtn.addEventListener('mouseover', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Also handle click event
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+        }
+
+        // Yes button behavior
+        const yesBtn = document.getElementById('yesBtn');
+        const celebration = document.getElementById('celebration');
+        const closeBtn = document.getElementById('closeBtn');
+        
+        yesBtn.addEventListener('click', function() {
+            // Show celebration
+            celebration.style.display = 'flex';
+            
+            // Create confetti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Random position
+                    const left = Math.random() * 100;
+                    confetti.style.left = `${left}%`;
+                    
+                    // Random color
+                    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = color;
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // Random shape
+                    if (Math.random() > 0.5) {
+                        confetti.style.borderRadius = '50%';
+                    }
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 50);
+            }
+
+            // Make teddies dance
+            document.querySelector('.teddy-left').style.animation = 'dance 1s ease-in-out';
+            document.querySelector('.teddy-right').style.animation = 'dance 1s ease-in-out';
+            
+            // Add dance animation
+            const danceStyle = document.createElement('style');
+            danceStyle.innerHTML = `
+                @keyframes dance {
+                    0%, 100% { transform: rotate(0deg) scale(1); }
+                    25% { transform: rotate(-10deg) scale(1.1); }
+                    50% { transform: rotate(0deg) scale(1.2); }
+                    75% { transform: rotate(10deg) scale(1.1); }
+                }
+            `;
+            document.head.appendChild(danceStyle);
+        });
+        
+        closeBtn.addEventListener('click', function() {
+            celebration.style.display = 'none';
+        });
+
+        // Initial position for no button
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = '50%';
+        noBtn.style.top = '0';
+        noBtn.style.transform = 'translateX(-50%)';
+    </script>
+</body>
+</html>
